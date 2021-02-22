@@ -62,32 +62,32 @@ router.get('/users/me', auth, async (req, res) => {
     res.send(req.user)
 })
 
-router.get('/users/:id', auth, async (req, res) => {
-    const _id = req.params.id
+// router.get('/users/:id', auth, async (req, res) => {
+//     const _id = req.params.id
 
-    try {
-        const user = await User.findById(_id)
-        if (!user) {
-            return res.status(404).send()
-        }
-        res.status(200).send(user)
-    } catch (e) {
-        res.status(500).send(e)
-    }
+//     try {
+//         const user = await User.findById(_id)
+//         if (!user) {
+//             return res.status(404).send()
+//         }
+//         res.status(200).send(user)
+//     } catch (e) {
+//         res.status(500).send(e)
+//     }
 
-    // ! old way without async function
-    // User.findById(_id).then((user) => {
-    //     if (!user) {
-    //         return res.status(404).send()
-    //     }
+//     // ! old way without async function
+//     // User.findById(_id).then((user) => {
+//     //     if (!user) {
+//     //         return res.status(404).send()
+//     //     }
         
-    //     res.send(user)
-    // }).catch((error) => {
-    //     res.status(500).send()
-    // })
-})
+//     //     res.send(user)
+//     // }).catch((error) => {
+//     //     res.status(500).send()
+//     // })
+// })
 
-router.patch('/users/:id', async (req, res) => {
+router.patch('/users/me', auth, async (req, res) => {
     const _id = req.params.id
 
     const updates = Object.keys(req.body)
@@ -101,7 +101,7 @@ router.patch('/users/:id', async (req, res) => {
     try {
 
         //  ? this is the solution to hashing passwords
-        const user = await User.findById(_id)
+        const user = req.user
 
         updates.forEach((update) => user[update] = req.body[update])
         await user.save()
@@ -109,9 +109,10 @@ router.patch('/users/:id', async (req, res) => {
         // ! this way will not allow hashing of passwords
         // const user = await User.findByIdAndUpdate(_id, req.body, { new: true, runValidators: true})
 
-        if (!user) {
-            return res.status(404).send()
-        }
+        // ! no need to check for user since changing route to /me instead of :id   
+        // if (!user) {
+        //     return res.status(404).send()
+        // }
 
         res.send(user)
     } catch (e) {
@@ -119,16 +120,18 @@ router.patch('/users/:id', async (req, res) => {
     }
 })
 
-router.delete('/users/:id', async (req, res) => {
-    const _id = req.params.id
+router.delete('/users/me', auth, async (req, res) => {
+    // const _id = req.params.id
     try {
-        const user = await User.findByIdAndDelete({_id})
+        // const user = await User.findByIdAndDelete(req.user._id)
 
-        if (!user) {
-            return res.status(404).send()
-        }
+        // if (!user) {
+        //     return res.status(404).send()
+        // }
 
-        res.send(user)
+        await req.user.remove()
+
+        res.send(req.user)
     } catch (e) {
         res.status(500).send()
     }

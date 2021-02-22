@@ -22,6 +22,20 @@ app.listen(port, () => {
     console.log('Server is up and running on port ' + port)
 })
 
+
+// const pet = {
+//     name: 'Hal'
+// }
+
+// pet.toJSON = function() {
+//     console.log(this)
+//     return this
+// }
+
+// console.log(JSON.stringify(pet))
+
+
+
 // !json web token practice
 // var jwt = require('jsonwebtoken');
 
