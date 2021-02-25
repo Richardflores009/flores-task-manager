@@ -22,6 +22,21 @@ app.listen(port, () => {
     console.log('Server is up and running on port ' + port)
 })
 
+// ! adding support for files
+// const multer = require('multer')
+// const upload = multer({
+//     dest: 'images'
+// })
+// app.post('/upload', upload.single('upload'), (req, res) => {
+//     res.send()
+// })
+
+
+
+
+
+
+
 // const Task = require('./models/task')
 // const User = require('./models/user')
 
