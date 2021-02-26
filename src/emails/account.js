@@ -11,16 +11,18 @@ const sendWelcomeEmail = (email, name) => {
   })
 }
 
-sgMail
-  .send(sendWelcomeEmail)
-  .then(() => {
-    console.log('Email sent')
-  })
-  .catch((error) => {
-    console.error(error)
-  })
+const sendGoodbyeEmail = (email, name) => {
+    sgMail.send({
+       to: email,
+       from: 'richardflores009@gmail.com',
+       subject: 'Cancellation >:(',
+       text: `Come on man why..... whyyy ... whyyyyyyyyyyyyyy, you are a son of a bitch ${name}, you know that???`
+    })
+}
+
 
 
   module.exports = {
-      sendWelcomeEmail
+      sendWelcomeEmail,
+      sendGoodbyeEmail
   }
